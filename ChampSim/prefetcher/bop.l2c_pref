@@ -1,0 +1,84 @@
+#include "cache.h"
+
+#define RR_LINE_SIZE 12
+#define RR_INDEX_SIZE 6
+
+
+void CACHE::l2c_prefetcher_initialize()
+{
+}
+
+uint32_t CACHE::l2c_prefetcher_operate(uint64_t addr, uint64_t ip, uint8_t cache_hit, uint8_t type, uint32_t metadata_in)
+{
+    // cout << curr_offset << endl;
+    uint8_t valid_addr = 0;
+    if(!cache_hit) valid_addr = 1;
+    if(cache_hit){
+        int set = get_set(addr);
+        uint32_t way = 0;
+        for(; way < NUM_WAY; way++){
+            if(block[set][way].valid && block[set][way].tag == (addr >> LOG2_BLOCK_SIZE)){
+                break;
+            }
+        }
+        if(block[set][way].prefetch == 1){
+            valid_addr = 1;
+            // cout << "Prefetched Hit\n";
+        }
+    }
+    delay_queue.pop_addr(&RR);
+    if(valid_addr == 1){
+        uint64_t pf_addr = ((addr >> LOG2_BLOCK_SIZE) + curr_offset) << LOG2_BLOCK_SIZE; 
+        delay_queue.add_addr(addr, &RR);
+        if(pf_on == 1) prefetch_line(ip, addr, pf_addr, FILL_L2, 0);
+        // add aged addresses to the left bank of the RR
+
+        if(RR.hit((addr >> LOG2_BLOCK_SIZE) - OFFSET_LIST[test_offset_index])){
+            offset_scores[test_offset_index]++;
+            if(warmup_complete[cpu]) total_scores[test_offset_index]++;
+        }
+        test_offset_index++;
+        if(test_offset_index == 46){
+            round_number += 1;
+            test_offset_index = 0;
+            int max_index = 0;
+            for (int i = 1; i < 46; i++){
+                if (offset_scores[i] > offset_scores[max_index]){
+                    max_index = i;
+                }
+            }
+            if(offset_scores[max_index] >= SCORE_MAX || round_number >= ROUND_MAX){
+                if(offset_scores[max_index] < BAD_SCORE){
+                    pf_on = 0;
+                }
+                else{
+                    pf_on = 1;
+                }
+                round_number = 0;
+                curr_offset = OFFSET_LIST[max_index];
+                // cout << "Learnt best offset = " << curr_offset << endl;
+                // printf("Score = %d\n", offset_scores[max_index]);
+                for(int i = 0; i < 46; i++){
+                    offset_scores[i] = 0;
+                }
+            }
+        }
+    }
+    return metadata_in;
+}
+
+uint32_t CACHE::l2c_prefetcher_cache_fill(uint64_t addr, uint32_t set, uint32_t way, uint8_t prefetch, uint64_t evicted_addr, uint32_t metadata_in)
+{
+    if(prefetch){
+        uint64_t to_add_addr = (addr >> LOG2_BLOCK_SIZE) - curr_offset;
+        RR.append_Recent_Request(to_add_addr, false);
+    }
+    return metadata_in;
+}
+
+void CACHE::l2c_prefetcher_final_stats()
+{
+    // for(int i = 0; i < 46; i++){
+        // cout << OFFSET_LIST[i] << ": " << total_scores[i] << endl;
+    // }
+}
