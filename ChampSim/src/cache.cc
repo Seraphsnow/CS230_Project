@@ -64,8 +64,13 @@ void CACHE::handle_fill()
     }
 #endif
 
+uint8_t bypass = 0;
+#ifdef EXCLUSIVE
+  bypass = 1;
+#endif
+
 #ifdef LLC_BYPASS
-    if ((cache_type == IS_LLC) && (way == LLC_WAY))
+    if ((cache_type == IS_LLC || cache_type == IS_L2C) && bypass)
     { // this is a bypass that does not fill the LLC
 
       // update replacement policy
@@ -120,21 +125,12 @@ void CACHE::handle_fill()
 #endif
 
     uint8_t do_fill = 1;
-    int skip_exclusive = 0;
-    // cout << fill_level << endl;
-// #ifdef EXCLUSIVE
-//     if (MSHR.entry[mshr_index].fill_level < fill_level && (cache_type != IS_L1D || cache_type != IS_L1I))
-//     {
-//       do_fill = 0;
-//       skip_exclusive = 1;
-//     }
-// #endif
-    uint8_t dirty_check = block[set][way].dirty;
-// #ifdef EXCLUSIVE
-//     dirty_check = 1;
-// #endif
+    uint8_t dirty_check = 0;
+    #ifdef EXCLUSIVE
+      dirty_check = (cache_type == IS_L1I || cache_type == IS_L1D);
+    #endif
     // is this dirty?
-    if (dirty_check && !skip_exclusive)
+    if (block[set][way].dirty || dirty_check)
     {
       // check if the lower level WQ has enough room to keep this writeback request
       if (lower_level)
@@ -206,7 +202,10 @@ void CACHE::handle_fill()
       else
         update_replacement_state(fill_cpu, set, way, MSHR.entry[mshr_index].full_addr, MSHR.entry[mshr_index].ip, block[set][way].full_addr, MSHR.entry[mshr_index].type, 0);
 
-      if(cache_type == IS_L1D || cache_type == IS_L1I) fill_cache(set, way, &MSHR.entry[mshr_index]);
+      sim_miss[fill_cpu][MSHR.entry[mshr_index].type]++;
+      sim_access[fill_cpu][MSHR.entry[mshr_index].type]++;
+      
+      fill_cache(set, way, &MSHR.entry[mshr_index]);
 
       // RFO marks cache line dirty
       if (cache_type == IS_L1D)
@@ -489,11 +488,11 @@ void CACHE::handle_writeback()
         uint8_t do_fill = 1;
 
         // is this dirty?
-        uint8_t dirty_check = block[set][way].dirty;
+        uint8_t dirty_check = 0;
 #ifdef EXCLUSIVE
-        dirty_check = 1;
+        dirty_check = (cache_type == IS_L2C || cache_type == IS_L1I || cache_type == IS_L1D);
 #endif
-        if (dirty_check)
+        if (block[set][way].dirty || dirty_check)
         {
 
           // check if the lower level WQ has enough room to keep this writeback request
@@ -630,7 +629,9 @@ void CACHE::handle_read()
 
       if (way >= 0)
       { // read hit
-
+        #ifdef EXCLUSIVE
+          if(cache_type == IS_LLC || cache_type == IS_L2C) invalidate_entry(RQ.entry[index].address);
+        #endif
         if (cache_type == IS_ITLB)
         {
           RQ.entry[index].instruction_pa = block[set][way].data;
@@ -695,16 +696,10 @@ void CACHE::handle_read()
             if (RQ.entry[index].fill_l1i)
             {
               upper_level_icache[read_cpu]->return_data(&RQ.entry[index]);
-#ifdef EXCLUSIVE
-              invalidate_entry(RQ.entry[index].address);
-#endif
             }
             if (RQ.entry[index].fill_l1d)
             {
               upper_level_dcache[read_cpu]->return_data(&RQ.entry[index]);
-#ifdef EXCLUSIVE
-              invalidate_entry(RQ.entry[index].address);
-#endif
             }
           }
           else
@@ -712,16 +707,10 @@ void CACHE::handle_read()
             if (RQ.entry[index].instruction)
             {
               upper_level_icache[read_cpu]->return_data(&RQ.entry[index]);
-#ifdef EXCLUSIVE
-              invalidate_entry(RQ.entry[index].address);
-#endif
             }
             if (RQ.entry[index].is_data)
             {
               upper_level_dcache[read_cpu]->return_data(&RQ.entry[index]);
-#ifdef EXCLUSIVE
-              invalidate_entry(RQ.entry[index].address);
-#endif
             }
           }
         }
@@ -1464,7 +1453,7 @@ int CACHE::add_rq(PACKET *packet)
   // if there is no duplicate, add it to RQ
   index = RQ.tail;
 
-#ifdef SANITY_CHECK
+#ifdef SANITY_CHECK 
   if (RQ.entry[index].address != 0)
   {
     cerr << "[" << NAME << "_ERROR] " << __func__ << " is not empty index: " << index;
