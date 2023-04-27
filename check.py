@@ -24,7 +24,7 @@ for hier in hiers:
             if hier == "excl":
                 sys.stdout.write("#define EXCLUSIVE\n")
             else:
-                sys.stdout.write("// #define INCLUSIVE\n")
+                sys.stdout.write("// #define EXCLUSIVE\n")
         else:
             sys.stdout.write(line)
         
@@ -33,13 +33,13 @@ for hier in hiers:
             if "#define LLC_SET " in line: 
                 sys.stdout.write("#define LLC_SET NUM_CPUS*" + sett+"\n")
             elif "#define LLC_LATENCY" in line:
-                sys.stdout.write("define LLC_LATENCY " + latency[sett] + "\n")
+                sys.stdout.write("#define LLC_LATENCY " + latency[sett] + "\n")
             else:
                 sys.stdout.write(line)
         for mytype in Types:
             os.system("./build_champsim.sh bimodal no no no no " + mytype + " 1 ")
             binary = "bimodal-no-no-no-no-" + mytype + "-1core"
-            os.system("mv ./bin/" + binary " ./bin/" + binary + "_" + hier)
+            os.system("mv ./bin/" + binary +" ./bin/" + binary + "_" + hier)
             binary  = binary + "_" + hier
             for trace in Traces:
                 os.system("./run_champsim.sh " + binary + " 30 30 " + trace)
