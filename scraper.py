@@ -26,35 +26,61 @@ def get_LLC(file):
             x = re.findall('(HIT:[\s]*|ACCESS:[\s]*|MISS:[\s]*)([0-9]+)', line)
             return(x[0][1], x[1][1], x[2][1])
 
-fixed_trace = 'bfs'
-for p in policies:
-    x = sizes
-    y_incl = [get_IPC(get_file(fixed_trace, 'incl', p, size)) for size in x]
-    y_excl = [get_IPC(get_file(fixed_trace, 'excl', p, size)) for size in x]
-    y_non = [get_IPC(get_file(fixed_trace, 'nonincl', p, size)) for size in x]
-    X_axis = np.arange(4)
-    plt.bar(X_axis - 0.25, y_incl, 0.25, label = 'Inclusive')
-    plt.bar(X_axis, y_non, 0.25, label = 'Non-Inclusive')
-    plt.bar(X_axis + 0.25, y_excl, 0.25, label = 'Exclusive')
-    plt.xticks(X_axis, x)
-    plt.xlabel("LLC Sets")
-    plt.ylabel("IPC")
-    plt.title(fixed_trace + "- IPC vs LLC Sets, policy = " + p)
-    plt.legend()
-    plt.show()
+for fixed_trace in traces:
+#     for p in policies:
+#         x = sizes
+#         y_incl = [float(get_IPC(get_file(fixed_trace, 'incl', p, size))) for size in x]
+#         y_excl = [float(get_IPC(get_file(fixed_trace, 'excl', p, size))) for size in x]
+#         y_non = [float(get_IPC(get_file(fixed_trace, 'nonincl', p, size))) for size in x]
+#         X_axis = np.arange(4)
+#         plt.bar(X_axis - 0.25, y_incl, 0.25, label = 'Inclusive')
+#         plt.bar(X_axis, y_non, 0.25, label = 'Non-Inclusive')
+#         plt.bar(X_axis + 0.25, y_excl, 0.25, label = 'Exclusive')
+#         plt.xticks(X_axis, x)
+#         plt.xlabel("LLC Sets")
+#         plt.ylabel("IPC")
+#         plt.title(fixed_trace + "- IPC vs LLC Sets, policy = " + p)
+#         plt.legend()
+#         plt.savefig(fixed_trace + "- IPC vs LLC Sets, policy = " + p)
+#         plt.show()
 
-for s in sizes:
-    x = policies
-    y_incl = [get_IPC(get_file(fixed_trace, 'incl', policy, s)) for policy in x]
-    y_non = [get_IPC(get_file(fixed_trace, 'nonincl', policy, s)) for policy in x]
-    y_excl = [get_IPC(get_file(fixed_trace, 'excl', policy, s)) for policy in x]  
-    X_axis = np.arange(5)
-    plt.bar(X_axis - 0.25, y_incl, 0.25, label = 'Inclusive')
-    plt.bar(X_axis, y_non, 0.25, label = 'Non-Inclusive')
-    plt.bar(X_axis + 0.25, y_excl, 0.25, label = 'Exclusive')
-    plt.xticks(X_axis, x)
-    plt.xlabel("Policies")
-    plt.ylabel("IPC")
-    plt.title(fixed_trace + "- IPC vs Policies, Sets = " + s)
-    plt.legend()
-    plt.show()
+#     for s in sizes:
+#         x = policies
+#         y_incl = [float(get_IPC(get_file(fixed_trace, 'incl', policy, s))) for policy in x]
+#         y_non = [float(get_IPC(get_file(fixed_trace, 'nonincl', policy, s))) for policy in x]
+#         y_excl = [float(get_IPC(get_file(fixed_trace, 'excl', policy, s))) for policy in x]  
+#         X_axis = np.arange(5)
+#         plt.bar(X_axis - 0.25, y_incl, 0.25, label = 'Inclusive')
+#         plt.bar(X_axis, y_non, 0.25, label = 'Non-Inclusive')
+#         plt.bar(X_axis + 0.25, y_excl, 0.25, label = 'Exclusive')
+#         plt.xticks(X_axis, x)
+#         plt.xlabel("Policies")
+#         plt.ylabel("IPC")
+#         plt.title(fixed_trace + "- IPC vs Policies, Sets = " + s)
+#         plt.legend()
+
+#         plt.savefig(fixed_trace + "- IPC vs Policies, Sets = " + s)
+#         plt.show()
+
+    for h in hierarchies:
+        x = policies
+        y_1 = [float(get_IPC(get_file(fixed_trace, h, policy, '2048'))) for policy in x]
+        y_2 = [float(get_IPC(get_file(fixed_trace, h, policy, '4096'))) for policy in x]
+        y_4 = [float(get_IPC(get_file(fixed_trace, h, policy, '8192'))) for policy in x] 
+        y_8 = [float(get_IPC(get_file(fixed_trace, h, policy, '16384'))) for policy in x]
+        X_axis = np.arange(5)
+        plt.bar(X_axis - 0.3, y_1, 0.2, label = '2048')
+        plt.bar(X_axis - 0.1, y_2, 0.2, label = '4096')
+        plt.bar(X_axis + 0.1, y_4, 0.2, label = '8192')
+        plt.bar(X_axis + 0.3, y_8, 0.2, label = '16384')
+        plt.xticks(X_axis, x)
+        plt.xlabel("Policies")
+        plt.ylabel("IPC")
+        plt.title(fixed_trace + "- IPC vs Policies, Heirarchy = " + h)
+        plt.legend()
+
+        plt.savefig(fixed_trace + "- IPC vs Policies, Heirarchy = " + h)
+        plt.show()
+
+
+
