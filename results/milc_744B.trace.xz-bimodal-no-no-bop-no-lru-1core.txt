@@ -1,0 +1,192 @@
+
+*** ChampSim Multicore Out-of-Order Simulator ***
+
+Warmup Instructions: 20000000
+Simulation Instructions: 30000000
+Number of CPUs: 1
+LLC sets: 2048
+LLC ways: 16
+Off-chip DRAM Size: 4096 MB Channels: 1 Width: 64-bit Data Rate: 3200 MT/s
+
+CPU 0 runs ../traces//milc_744B.trace.xz
+CPU 0 Bimodal branch predictor
+Learnt best offset = 2
+Learnt best offset = 1
+Learnt best offset = 2
+Learnt best offset = 1
+Learnt best offset = 2
+Learnt best offset = 8
+Learnt best offset = 1
+Learnt best offset = 2
+Learnt best offset = 32
+Learnt best offset = 1
+Learnt best offset = 9
+Learnt best offset = 1
+Learnt best offset = 2
+Learnt best offset = 1
+Learnt best offset = 2
+Learnt best offset = 32
+Learnt best offset = 1
+Learnt best offset = 2
+Learnt best offset = 1
+Learnt best offset = 2
+Learnt best offset = 1
+Learnt best offset = 2
+Learnt best offset = 32
+Heartbeat CPU 0 instructions: 10000002 cycles: 3426564 heartbeat IPC: 2.91838 cumulative IPC: 2.91838 (Simulation time: 0 hr 0 min 13 sec) 
+Learnt best offset = 1
+Learnt best offset = 2
+Learnt best offset = 32
+Learnt best offset = 1
+Learnt best offset = 2
+Learnt best offset = 32
+Learnt best offset = 1
+Learnt best offset = 2
+Learnt best offset = 8
+Learnt best offset = 1
+Learnt best offset = 2
+Learnt best offset = 32
+Learnt best offset = 1
+Learnt best offset = 2
+Learnt best offset = 32
+Learnt best offset = 1
+Learnt best offset = 2
+Learnt best offset = 32
+Learnt best offset = 1
+Learnt best offset = 9
+Learnt best offset = 1
+Learnt best offset = 2
+Learnt best offset = 1
+Learnt best offset = 9
+Learnt best offset = 1
+Heartbeat CPU 0 instructions: 20000001 cycles: 6852583 heartbeat IPC: 2.91884 cumulative IPC: 2.91861 (Simulation time: 0 hr 0 min 27 sec) 
+
+Warmup complete CPU 0 instructions: 20000001 cycles: 6852583 (Simulation time: 0 hr 0 min 27 sec) 
+
+Learnt best offset = 32
+Learnt best offset = 9
+Learnt best offset = 32
+Learnt best offset = 9
+Learnt best offset = 32
+Learnt best offset = 2
+Learnt best offset = 32
+Learnt best offset = 9
+Learnt best offset = 32
+Learnt best offset = 36
+Learnt best offset = 32
+Learnt best offset = 10
+Learnt best offset = 32
+Learnt best offset = 40
+Learnt best offset = 32
+Learnt best offset = 40
+Learnt best offset = 32
+Learnt best offset = 9
+Learnt best offset = 32
+Learnt best offset = 9
+Learnt best offset = 32
+Learnt best offset = 36
+Heartbeat CPU 0 instructions: 30000000 cycles: 20935644 heartbeat IPC: 0.710073 cumulative IPC: 0.710073 (Simulation time: 0 hr 0 min 42 sec) 
+Learnt best offset = 32
+Learnt best offset = 2
+Learnt best offset = 32
+Learnt best offset = 18
+Learnt best offset = 32
+Learnt best offset = 8
+Learnt best offset = 32
+Learnt best offset = 9
+Learnt best offset = 32
+Learnt best offset = 9
+Learnt best offset = 32
+Learnt best offset = 9
+Learnt best offset = 32
+Learnt best offset = 18
+Learnt best offset = 32
+Learnt best offset = 9
+Learnt best offset = 32
+Learnt best offset = 2
+Learnt best offset = 32
+Learnt best offset = 2
+Learnt best offset = 32
+Learnt best offset = 9
+Learnt best offset = 32
+Heartbeat CPU 0 instructions: 40000000 cycles: 34845501 heartbeat IPC: 0.718915 cumulative IPC: 0.714466 (Simulation time: 0 hr 0 min 58 sec) 
+Learnt best offset = 9
+Learnt best offset = 32
+Learnt best offset = 9
+Learnt best offset = 32
+Learnt best offset = 9
+Learnt best offset = 32
+Learnt best offset = 9
+Learnt best offset = 32
+Learnt best offset = 40
+Learnt best offset = 32
+Learnt best offset = 9
+Learnt best offset = 32
+Learnt best offset = 36
+Learnt best offset = 32
+Learnt best offset = 9
+Learnt best offset = 32
+Learnt best offset = 2
+Learnt best offset = 32
+Learnt best offset = 2
+Learnt best offset = 32
+Learnt best offset = 9
+Learnt best offset = 32
+Heartbeat CPU 0 instructions: 50000002 cycles: 48730245 heartbeat IPC: 0.720215 cumulative IPC: 0.716372 (Simulation time: 0 hr 1 min 13 sec) 
+Finished CPU 0 instructions: 30000001 cycles: 41877662 cumulative IPC: 0.716372 (Simulation time: 0 hr 1 min 13 sec) 
+
+ChampSim completed all CPUs
+
+Region of Interest Statistics
+
+CPU 0 cumulative IPC: 0.716372 instructions: 30000001 cycles: 41877662
+L1D TOTAL     ACCESS:    4791782  HIT:    4371303  MISS:     420479
+L1D LOAD      ACCESS:    2835261  HIT:    2414782  MISS:     420479
+L1D RFO       ACCESS:    1956521  HIT:    1956521  MISS:          0
+L1D PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
+L1D WRITEBACK ACCESS:          0  HIT:          0  MISS:          0
+L1D PREFETCH  REQUESTED:          0  ISSUED:          0  USEFUL:          0  USELESS:          0
+L1D AVERAGE MISS LATENCY: 139.403 cycles
+L1I TOTAL     ACCESS:    4849394  HIT:    4849394  MISS:          0
+L1I LOAD      ACCESS:    4849394  HIT:    4849394  MISS:          0
+L1I RFO       ACCESS:          0  HIT:          0  MISS:          0
+L1I PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
+L1I WRITEBACK ACCESS:          0  HIT:          0  MISS:          0
+L1I PREFETCH  REQUESTED:          0  ISSUED:          0  USEFUL:          0  USELESS:          0
+L1I AVERAGE MISS LATENCY: -nan cycles
+L2C TOTAL     ACCESS:     749441  HIT:     223080  MISS:     526361
+L2C LOAD      ACCESS:     420479  HIT:     120286  MISS:     300193
+L2C RFO       ACCESS:          0  HIT:          0  MISS:          0
+L2C PREFETCH  ACCESS:     225982  HIT:       3223  MISS:     222759
+L2C WRITEBACK ACCESS:     102980  HIT:      99571  MISS:       3409
+L2C PREFETCH  REQUESTED:     300193  ISSUED:     232484  USEFUL:     120286  USELESS:     102456
+L2C AVERAGE MISS LATENCY: 186.643 cycles
+LLC TOTAL     ACCESS:     625909  HIT:     104054  MISS:     521855
+LLC LOAD      ACCESS:     295187  HIT:        460  MISS:     294727
+LLC RFO       ACCESS:          0  HIT:          0  MISS:          0
+LLC PREFETCH  ACCESS:     227765  HIT:        638  MISS:     227127
+LLC WRITEBACK ACCESS:     102957  HIT:     102956  MISS:          1
+LLC PREFETCH  REQUESTED:          0  ISSUED:          0  USEFUL:        460  USELESS:     227509
+LLC AVERAGE MISS LATENCY: 157.145 cycles
+Major fault: 0 Minor fault: 65495
+
+DRAM Statistics
+ CHANNEL 0
+ RQ ROW_BUFFER_HIT:     295358  ROW_BUFFER_MISS:     226496
+ DBUS_CONGESTED:     123558
+ WQ ROW_BUFFER_HIT:      23742  ROW_BUFFER_MISS:      79106  FULL:          0
+
+ AVG_CONGESTED_CYCLE: 5
+
+CPU 0 Branch Prediction Accuracy: 85.7142% MPKI: 2.2883 Average ROB Occupancy at Mispredict: 277.133
+
+Branch types
+NOT_BRANCH: 29519110 98.397%
+BRANCH_DIRECT_JUMP: 0 0%
+BRANCH_INDIRECT: 0 0%
+BRANCH_CONDITIONAL: 274595 0.915317%
+BRANCH_DIRECT_CALL: 102973 0.343243%
+BRANCH_INDIRECT_CALL: 0 0%
+BRANCH_RETURN: 102973 0.343243%
+BRANCH_OTHER: 0 0%
+
